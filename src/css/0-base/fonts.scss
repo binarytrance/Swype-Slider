@@ -1,0 +1,23 @@
+// @import "base-styles";
+
+/*Different fonts*/
+
+@import url('https://fonts.googleapis.com/css?family=Poppins:300,400,500,600');
+
+/*-----------variables that store fonts-----------*/
+$poppins: 'Poppins', sans-serif;
+
+
+/*------------------Base font styles------------------*/
+
+@mixin font($font-size, $font-weight, $font-color) {
+	// font-family: $font-family;
+	font-size: $font-size;
+	font-weight: $font-weight;
+	color: $font-color;
+	line-height: $font-size + 10;
+}
+
+
+
+/*------------------END: Base font styles------------------*/

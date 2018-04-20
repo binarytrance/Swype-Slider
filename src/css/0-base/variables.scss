@@ -1,0 +1,41 @@
+/*screen variables while using min-width media queries*/
+$sm: 768px;
+$md: 992px;
+$md-l: 1024px;
+$lg: 1200px;
+$lg-l: 1400px;
+$xl: 1600px;
+$xxl: 1900px;
+// $4k: 2200px;
+/*END: screen variables*/
+
+/*screen variables while using max-width media queries*/
+$sm-max: max-width 767px;
+$md-max: max-width $md - 1;
+$md-l-max: max-width $md-l - 1;
+$lg-max: max-width $lg - 1;
+$lg-l-max: max-width $lg-l - 1;
+$xl-max: max-width $xl - 1;
+$xxl-max: max-width $xxl - 1;
+/*END: screen variables*/
+
+$black-dark: #666666;
+$black-light: #999999;
+$black-ex-light: #b9baba;
+$background-gray: #fafafa;
+
+/*screen variables while using min-width media queries*/
+$teal: #5ac4be;
+$indigo: #2b3256;
+$main-heading: #333;
+$light-gray: #999;
+$dark-gray: #666;
+$royal-blue: #11689b;
+$body-background: #f6f6f6;
+$card-border: #eceded;
+$heading-marker: #2c99ce;
+$red: #ff4e4e;
+$orange: #febb08;
+$yellow: #fda207;
+$green: #4f8a10;
+$border-gray: rgba(161, 161, 161, 0.4);

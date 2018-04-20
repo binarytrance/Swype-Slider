@@ -1,0 +1,27 @@
+doctype html
+
+html(lang= "en")
+	- var pageName = "home"
+	head
+		include pug/base/header.pug
+		+header(pageName)
+	body
+		//- include pug/components/loader.pug
+		//- include pug/base/logo-only-top-nav.pug
+
+		main.padding-main
+			//- START: Nav Bar =====================================================================
+			//- include pug/base/nav.pug
+			//- END: Nav Bar =======================================================================
+			p sdfa
+
+			include pug/layouts/slider-container.pug
+
+			
+			
+			//- include pug/base/footer.pug
+		//- footer#footer
+			//- include pug/layouts/footer.pug
+
+		//- include pug/base/scripts.pug
+
