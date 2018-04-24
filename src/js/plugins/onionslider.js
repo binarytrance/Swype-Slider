@@ -2,25 +2,39 @@
 
 // slider initialisation
 var translateVal = 0;
-var slideNumber = 6;
+// number of slider
+var slideNumber = 0;
+// number of clicks required to see entire slider slides
+var clicks = 0;
+// number of clicks required
 var clickNumber = slideNumber - 3;
+// number of slides visible on screen at any given time
 var visibleSlides = 3;
+// calculates the width of slides based on the number of slides that are to be visible
 var slideWidth = Math.round((100 / visibleSlides) * 100) / 100;
-var slidVal = 0;
-var maxTranslation = visibleSlides * slideWidth;
-$(".slider-parent").attr("data-translate", 0);
+// var slidVal = 0;
+// 
+console.log(slideNumber);
+//var maxTranslation = visibleSlides * slideWidth;
+var maxTranslation = 0;
+$(".swypeSlider-wrapper").attr("data-translate", 0);
 var clickedParent = $(this).siblings(".slider-gran").children(".slider-parent");
 
 // slider arrow click events
 $(".js-round-arrow").on("click", function() {
-	if($(this).hasClass("round-arrow--left")) {
+	// initialise the number of slides on the clicked panel
+	slideNumber = $(this).siblings($(".swypeSlider-container")).children(".swypeSlider-wrapper").children(".c-top-villa").length;
+	clicks = slideNumber - visibleSlides;
+	maxTranslation = clicks * slideWidth;
+	console.log( slideNumber, slideWidth, maxTranslation);
+	if($(this).hasClass("round-arrow--left") && $(window).width() > 769) {
 		var attrVal = $(this).siblings(".slider-gran").children(".slider-parent").attr("data-translate");
 		console.log(typeof(attrVal));
 		var newAttrVal = parseFloat(attrVal)+slideWidth;
 		translateVal = newAttrVal;
 		$(this).siblings(".slider-gran").children(".slider-parent").attr("data-translate", translateVal);
 	}
-	else if($(this).hasClass("round-arrow--right")) {
+	else if($(this).hasClass("round-arrow--right") && $(window).width() > 769) {
 		var attrVal = $(this).siblings(".slider-gran").children(".slider-parent").attr("data-translate");
 		console.log(typeof(attrVal));
 		var newAttrVal = parseFloat(attrVal)+ (-slideWidth);
@@ -52,6 +66,22 @@ $(".js-round-arrow").on("click", function() {
 	$(this).siblings(".slider-gran").children(".slider-parent").css("transform", "translateX(" + translateVal + "%)");
 });
 
+$(window).on("load resize", function() {
+	$(".slider-parent").attr("data-translate", 0);
+	$(".slider-parent").css("transform", "translateX(0)")
+	if($(window).width() > 768) {
+		$(".round-arrow--right").css("display", "flex");
+		$(".round-arrow--left").css("display", "none");
+	}
+	else {
+		$(".round-arrow--right").css("display", "none");
+		$(".round-arrow--left").css("display", "none");
+	}
+	
+})
+
+
+
 // adaptive background
 // get dominant color of background image and add color overlay
 $(document).ready(function(){
@@ -72,12 +102,12 @@ $(window).on("load resize", function() {
 		$(".c-heading-wrapper--destinations").insertBefore($(".c-heading-wrapper--destinations").siblings(".landing-cards").children(".c-villa-wrapper"));
 	}
 });
-$(window).on("load resize", function() {
-	if($(window).width() < 1200) {
-		$(".js-search-form-container").insertAfter($(".section-villa-links"))
+// $(window).on("load resize", function() {
+// 	if($(window).width() < 768) {
+// 		$(".js-search-form-container").insertAfter($(".section-villa-links"))
 		
-	}
-	else {
-		$(".js-search-form-container").insertAfter($(".mobile-nav"))
-	}
-})
+// 	}
+// 	else {
+// 		$(".js-search-form-container").insertAfter($(".mobile-nav"))
+// 	}
+// })
