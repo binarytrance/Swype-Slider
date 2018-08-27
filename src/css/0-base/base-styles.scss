@@ -33,9 +33,6 @@ main {
 	@include breakpoint($sm) {
 		padding-top: 120px;
 	}
-	@media(max-width: 991px){
-		display:none;
-	}
 }
 
 .mobile-main {

@@ -4,8 +4,7 @@ files:
   formatter: html
   # Output file instead of logging results
   output-file: 'linters/sass-lint.html'
-  ignore:
-    - 'styles/1-plugins/**/*.scss'
+  ignore: 'styles/1-plugins/**/*.scss'
 options:
   formatter: stylish
   merge-default-rules: false
@@ -57,7 +56,7 @@ rules:
     - 0
     - convention: hyphenatedbem
   indentation:
-    - 1
+    - 0
     - size: 4
   leading-zero:
     - 0

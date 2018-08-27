@@ -56,10 +56,10 @@ gulp.task('styles', function() {
 		cascade: false}))
 	.pipe(cleanCSS())
 	.pipe(postcss(plugins))
-	// .pipe(colorguard({
-	// 		threshold: 5,
-	// 		logOk: true
-	// 	}))
+	.pipe(colorguard({
+			threshold: 5,
+			logOk: true
+		}))
 	.pipe(sourcemaps.write())
 	.pipe(rename({ suffix: '.min'}))
 	.pipe(gulp.dest('dist/css'));
@@ -143,8 +143,7 @@ gulp.task('watch', ['templates', 'scriptsConcat', 'styles', 'images', 'fonts'], 
 	browserSync.init({
 		server: {
 			proxy: "local.build",
-			baseDir: "dist/",
-			port: 3001
+			baseDir: "dist/"
 		}
 	});
 

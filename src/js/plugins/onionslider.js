@@ -12,8 +12,9 @@ var clickNumber = slideNumber - 3;
 var visibleSlides = 3;
 // calculates the width of slides based on the number of slides that are to be visible
 var slideWidth = Math.round((100 / visibleSlides) * 100) / 100;
+console.log(slideWidth);
 // var slidVal = 0;
-// 
+$(".c-top-villa").css("width", slideWidth + "%")
 console.log(slideNumber);
 //var maxTranslation = visibleSlides * slideWidth;
 var maxTranslation = 0;
@@ -80,34 +81,3 @@ $(window).on("load resize", function() {
 	
 })
 
-
-
-// adaptive background
-// get dominant color of background image and add color overlay
-$(document).ready(function(){
-  $.adaptiveBackground.run();
-});
-
-$(window).on("load resize", function() {
-	if($(window).width() > 768) {
-		$(".c-heading-wrapper--top").insertBefore($(".c-heading-wrapper--top").parent(".landing-cards"));
-		$(".c-heading-wrapper--premium").insertBefore($(".c-heading-wrapper--premium").parent(".landing-cards"));
-		$(".c-heading-wrapper--curated").insertBefore($(".c-heading-wrapper--curated").parent(".landing-cards"));
-		$(".c-heading-wrapper--destinations").insertBefore($(".c-heading-wrapper--destinations").parent(".landing-cards"));
-	}
-	else {
-		$(".c-heading-wrapper--top").insertBefore($(".c-heading-wrapper--top").siblings(".landing-cards").children(".c-villa-wrapper"));
-		$(".c-heading-wrapper--premium").insertBefore($(".c-heading-wrapper--premium").siblings(".landing-cards").children(".c-villa-wrapper"));
-		$(".c-heading-wrapper--curated").insertBefore($(".c-heading-wrapper--curated").siblings(".landing-cards").children(".c-villa-wrapper"));
-		$(".c-heading-wrapper--destinations").insertBefore($(".c-heading-wrapper--destinations").siblings(".landing-cards").children(".c-villa-wrapper"));
-	}
-});
-// $(window).on("load resize", function() {
-// 	if($(window).width() < 768) {
-// 		$(".js-search-form-container").insertAfter($(".section-villa-links"))
-		
-// 	}
-// 	else {
-// 		$(".js-search-form-container").insertAfter($(".mobile-nav"))
-// 	}
-// })
