@@ -27,23 +27,28 @@ $(".js-round-arrow").on("click", function() {
 	slideNumber = $(this).siblings($(".swypeSlider-container")).children(".swypeSlider-wrapper").children(".c-top-villa").length;
 	clicks = slideNumber - visibleSlides;
 	maxTranslation = clicks * slideWidth;
+	var maxTranslationRounded = Math.round(maxTranslation * 100) / 100;
 	console.log( slideNumber, slideWidth, maxTranslation);
 	if($(this).hasClass("round-arrow--left") && $(window).width() > 769) {
+		console.log("left clicked");
 		var attrVal = $(this).siblings(".slider-gran").children(".slider-parent").attr("data-translate");
-		console.log(typeof(attrVal));
+		console.log(attrVal);
 		var newAttrVal = parseFloat(attrVal)+slideWidth;
 		translateVal = newAttrVal;
+		var translateValRounded = Math.round(translateVal * 100) / 100;
 		$(this).siblings(".slider-gran").children(".slider-parent").attr("data-translate", translateVal);
 	}
 	else if($(this).hasClass("round-arrow--right") && $(window).width() > 769) {
+		console.log("right clicked");
 		var attrVal = $(this).siblings(".slider-gran").children(".slider-parent").attr("data-translate");
-		console.log(typeof(attrVal));
+		console.log(attrVal);
 		var newAttrVal = parseFloat(attrVal)+ (-slideWidth);
 		translateVal = newAttrVal;
+		var translateValRounded = Math.round(translateVal * 100) / 100;
 		$(this).siblings(".slider-gran").children(".slider-parent").attr("data-translate", translateVal);
 	}
-	console.log(translateVal);
-	if(translateVal === 0) {
+	console.log(translateVal, maxTranslationRounded);
+	if(translateValRounded === 0) {
 		if($(this).hasClass("round-arrow--left")) {
 			$(this).css("display", "none")
 		}
@@ -52,7 +57,7 @@ $(".js-round-arrow").on("click", function() {
 	else {
 		$(this).siblings(".round-arrow--left").css("display", "flex");
 	}
-	if(translateVal <= -maxTranslation) {
+	if(translateValRounded <= -maxTranslationRounded) {
 		if($(this).hasClass("round-arrow--right")) {
 			$(this).css("display", "none")
 		}
@@ -70,6 +75,7 @@ $(".js-round-arrow").on("click", function() {
 $(window).on("load resize", function() {
 	$(".slider-parent").attr("data-translate", 0);
 	$(".slider-parent").css("transform", "translateX(0)")
+	// controls visibility of navigation arrows
 	if($(window).width() > 768) {
 		$(".round-arrow--right").css("display", "flex");
 		$(".round-arrow--left").css("display", "none");
