@@ -2,7 +2,7 @@
 // IIFE to keep things modular and nice
 (function() {
 
-	// define constructor
+	// define constructor which is public
 	this.SwypeSlider = function() {
 		// create global references
 		var arrow;
@@ -10,11 +10,15 @@
 		this.visibleSlides = null;
 		this.slidesToSwype = null;
 		this.arrowsArray = document.getElementsByClassName("js-round-arrow");
-		console.log(this.arrowsArray, Array.isArray(this.arrowsArray), this.arrowsArray instanceof Array);
-		this.arrowsArray.forEach(function(d, i) {
-			d.addEventListener("click", this.changeSlide());
-			console.log(i);
-		})
+		var arrows = this.arrowsArray; // correct
+		console.log(this.arrowsArray, typeof this.arrowArray, Array.isArray(this.arrowsArray), this.arrowsArray instanceof Array, arrows);
+		// this.arrowsArray.forEach(function(d, i) {
+		// 	d.addEventListener("click", this.changeSlide());
+		// 	console.log(i);
+		// })
+		for(var i = 0; i < arrows.length; i++) {
+			arrows[i].addEventListener("click", this.changeSlide());
+		}
 		
 		// define default options
 		var defaults = {
