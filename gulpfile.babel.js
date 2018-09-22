@@ -100,9 +100,6 @@ gulp.task('scriptsConcat', function() {
 gulp.task('scripts', function () {
   return gulp.src('src/js/**/*.js')
     .pipe(plumber({ errorHandler: onError }))
-    .pipe(babel({
-	  "presets": ["@babel/preset-env"]
-	}))
     .pipe(uglify())
     .pipe(rename({ suffix: '.min' }))
     .pipe(gulp.dest('dist/js/'));
