@@ -35,11 +35,15 @@
 		}
 	}
 	SwypeSlider.prototype.initSwype = () => {
-		console.log(this.arrows);
+		// console.log(this.arrows);
 		this.temp = "temp";
+		var temp = "tempVar"
+		console.log(temp);
 		this.slidesArray = document.getElementsByClassName("swypeSlide");
 		this.swypeSliderWrapper = document.getElementsByClassName("swypeSlider-wrapper");
-		console.log(this.swypeSliderWrapper);
+		// number of slides visible on screen at any given time
+		this.visibleSlides = 3;
+		// console.log(this.swypeSliderWrapper);
 		// buildSlider
 		buildSlider();
 		// manageEvents
@@ -48,17 +52,16 @@
 
 	// private method that build the slider initially
 	buildSlider = () => {
-		
+		console.log(temp)
 		// number of slider
-		var slideNumber = 0;
+		// var slideNumber = 0;
 		// number of clicks required to see entire slider slides
-		var clicks = 0;
+		// var clicks = 0;
 		// number of clicks required
-		var clickNumber = slideNumber - 3;
-		// number of slides visible on screen at any given time
-		var visibleSlides = 3;
+		// var clickNumber = slideNumber - 3;
+		
 		// calculates the width of slides based on the number of slides that are to be visible
-		var slideWidth = Math.round((100 / visibleSlides) * 100) / 100;
+		this.slideWidth = Math.round((100 / this.visibleSlides) * 100) / 100;
 		console.log(this.swypeSliderWrapper);
 		Array.from(this.swypeSliderWrapper).forEach(function(item) {
 			item.dataset.translate = 0;
@@ -68,7 +71,7 @@
 		
 		
 		Array.from(this.slidesArray).forEach(function(item) {
-			item.style.width = slideWidth + "%";
+			item.style.width = this.slideWidth + "%";
 		});
 	}
 
@@ -85,19 +88,81 @@
 			// looping over a HTML collection
 			for(var i = 0; i < this.arrows.length; i++) {
 				console.log("adding event listener");
-				this.arrows[i].addEventListener("click", changeSlide);
+				this.arrows[i].addEventListener("click", changeSlide.bind(this, event));
 			}
 		} 
+		
 		
 	}
 
 	//private method to change slides on clicking of arrow key
 	changeSlide = () => {
-		console.log(909);
+		console.log(909, this, event.target);
 		// slider initialisation
 		var translateVal = 0;
 		var maxTranslation = 0;
+		console.log(this, this.className);
+		if(hasClass(event.target, "round-arrow--right")) {
+			console.log(true);
+		}
+		console.log(event.target, this, $(this));
+		var slideNumber = event.target.parentNode.getElementsByClassName("swypeSlide").length;
+		clicks = slideNumber - this.visibleSlides;
+		maxTranslation = clicks * this.slideWidth;
+		console.log(maxTranslation);
+		var maxTranslationRounded = Math.round(maxTranslation * 100) / 100;
+		console.log(window.innerWidth);
+		// .siblings($(".swypeSlider-container")).children(".swypeSlider-wrapper").children(".swypeSlide").length;
+		// console.log(event.target, event.target.parentNode.getElementsByClassName("swypeSlide").length);
+		if(hasClass(event.target, "round-arrow--left") && window.innerWidth > 769) {
+			console.log("left and >769");
 
+			var attrVal = event.target.parentNode.getElementsByClassName("slider-parent")[0].getAttribute("data-translate");
+			console.log(attrVal);
+			var newAttrVal = parseFloat(attrVal) + this.slideWidth;
+			translateVal = newAttrVal;
+			var translateValRounded = Math.round(translateVal * 100) / 100;
+			console.log(translateValRounded);
+			// var attrVal = $(this).siblings(".slider-gran").children(".slider-parent").attr("data-translate");
+			event.target.parentNode.getElementsByClassName("slider-parent")[0].setAttribute("data-translate", translateVal)
+
+// $(this).siblings(".slider-gran").children(".slider-parent").attr("data-translate", translateVal);
+		}
+		else if(hasClass(event.target, "round-arrow--right") && window.innerWidth > 769) {
+			console.log("right and <769");
+			var attrVal = event.target.parentNode.getElementsByClassName("slider-parent")[0].getAttribute("data-translate");
+			console.log(attrVal);
+			var newAttrVal = parseFloat(attrVal)+ (-this.slideWidth);
+			translateVal = newAttrVal;
+			var translateValRounded = Math.round(translateVal * 100) / 100;
+			console.log(translateValRounded);
+			// var attrVal = $(this).siblings(".slider-gran").children(".slider-parent").attr("data-translate");
+			event.target.parentNode.getElementsByClassName("slider-parent")[0].setAttribute("data-translate", translateVal)
+
+		}
+		if(translateValRounded === 0) {
+			if(hasClass(event.target, "round-arrow--left")) {
+				event.target.style.display = "none";
+			}
+		}
+		else {
+			event.target.parentNode.getElementsByClassName("round-arrow--left")[0].style.display = "flex";
+			// $(this).siblings(".round-arrow--right").css("display", "flex");
+		}
+
+		if(translateValRounded <= -maxTranslationRounded) {
+			if(hasClass(event.target, "round-arrow--right")) {
+				event.target.style.display = "none";
+			}
+			// $(".round-arrow--right").css("display", "none");
+		}
+		else {
+			event.target.parentNode.getElementsByClassName("round-arrow--right")[0].style.display = "flex";
+		}
+		
+// $(this).siblings(".slider-gran").children(".slider-parent").attr("data-translate", translateVal);
+		event.target.parentNode.getElementsByClassName("slider-parent")[0].style.transform = "translateX(" + translateVal + "%)";
+		// $(this).hasClass("round-arrow--left") && $(window).width() > 769
 	};
 	// Private method to extend default options with user options
 	function extendDefaults(source, userObject) {
@@ -111,77 +176,84 @@
 		return source;
 	}
 	// slider initialisation
-	var translateVal = 0;
-	// number of slider
-	var slideNumber = 0;
-	// number of clicks required to see entire slider slides
-	var clicks = 0;
-	// number of clicks required
-	var clickNumber = slideNumber - 3;
-	// number of slides visible on screen at any given time
-	var visibleSlides = 3;
-	// calculates the width of slides based on the number of slides that are to be visible
-	var slideWidth = Math.round((100 / visibleSlides) * 100) / 100;
+	// var translateVal = 0;
+	// // number of slider
+	// var slideNumber = 0;
+	// // number of clicks required to see entire slider slides
+	// var clicks = 0;
+	// // number of clicks required
+	// var clickNumber = slideNumber - 3;
+	// // number of slides visible on screen at any given time
+	// var visibleSlides = 3;
+	// // calculates the width of slides based on the number of slides that are to be visible
+	// var slideWidth = Math.round((100 / visibleSlides) * 100) / 100;
 	// console.log(slideWidth);
 	// var slidVal = 0;
-	$(".swypeSlide").css("width", slideWidth + "%");
+	// $(".swypeSlide").css("width", slideWidth + "%");
 	/// converted to js ==================================================================================================
 	// console.log(slideNumber);
 	//var maxTranslation = visibleSlides * slideWidth;
-	var maxTranslation = 0;
+	// var maxTranslation = 0;
 	// $(".swypeSlider-wrapper").attr("data-translate", 0);
-	var clickedParent = $(this).siblings(".slider-gran").children(".slider-parent");
+	// var clickedParent = $(this).siblings(".slider-gran").children(".slider-parent");
 
 	// slider arrow click events
-	$(".js-round-arrow").on("click", function() {
-		// initialise the number of slides on the clicked panel
-		slideNumber = $(this).siblings($(".swypeSlider-container")).children(".swypeSlider-wrapper").children(".swypeSlide").length;
-		clicks = slideNumber - visibleSlides;
-		maxTranslation = clicks * slideWidth;
-		var maxTranslationRounded = Math.round(maxTranslation * 100) / 100;
-		// console.log( slideNumber, slideWidth, maxTranslation);
-		if($(this).hasClass("round-arrow--left") && $(window).width() > 769) {
-			// console.log("left clicked");
-			var attrVal = $(this).siblings(".slider-gran").children(".slider-parent").attr("data-translate");
-			// console.log(attrVal);
-			var newAttrVal = parseFloat(attrVal)+slideWidth;
-			translateVal = newAttrVal;
-			var translateValRounded = Math.round(translateVal * 100) / 100;
-			$(this).siblings(".slider-gran").children(".slider-parent").attr("data-translate", translateVal);
-		}
-		else if($(this).hasClass("round-arrow--right") && $(window).width() > 769) {
-			// console.log("right clicked");
-			var attrVal = $(this).siblings(".slider-gran").children(".slider-parent").attr("data-translate");
-			// console.log(attrVal);
-			var newAttrVal = parseFloat(attrVal)+ (-slideWidth);
-			translateVal = newAttrVal;
-			var translateValRounded = Math.round(translateVal * 100) / 100;
-			$(this).siblings(".slider-gran").children(".slider-parent").attr("data-translate", translateVal);
-		}
-		// console.log(translateVal, maxTranslationRounded);
-		if(translateValRounded === 0) {
-			if($(this).hasClass("round-arrow--left")) {
-				$(this).css("display", "none")
-			}
-			// $(".round-arrow--left").css("display", "none");
-		}
-		else {
-			$(this).siblings(".round-arrow--left").css("display", "flex");
-		}
-		if(translateValRounded <= -maxTranslationRounded) {
-			if($(this).hasClass("round-arrow--right")) {
-				$(this).css("display", "none")
-			}
-			// $(".round-arrow--right").css("display", "none");
-		}
-		else {
-			$(this).siblings(".round-arrow--right").css("display", "flex");
-		}
-		// console.log($(this).siblings(".slider-gran").children(".slider-parent"));
-		// $(this).siblings().children(".slider-parent");
-		$(this).siblings(".slider-gran").children(".slider-parent").attr("data-translate", translateVal);
-		$(this).siblings(".slider-gran").children(".slider-parent").css("transform", "translateX(" + translateVal + "%)");
-	});
+	// $(".js-round-arrow").on("click", function() {
+	// 	console.log($(this));
+	// 	// initialise the number of slides on the clicked panel
+	// 	slideNumber = $(this).siblings($(".swypeSlider-container")).children(".swypeSlider-wrapper").children(".swypeSlide").length;
+	// 	clicks = slideNumber - visibleSlides;
+	// 	maxTranslation = clicks * slideWidth;
+	// 	var maxTranslationRounded = Math.round(maxTranslation * 100) / 100;
+	// 	// console.log( slideNumber, slideWidth, maxTranslation);
+	// 	// if($(this).hasClass("round-arrow--left") && $(window).width() > 769) {
+	// 	// 	// console.log("left clicked");
+	// 	// 	var attrVal = $(this).siblings(".slider-gran").children(".slider-parent").attr("data-translate");
+	// 	// 	// console.log(attrVal);
+	// 	// 	var newAttrVal = parseFloat(attrVal)+slideWidth;
+	// 	// 	translateVal = newAttrVal;
+	// 	// 	var translateValRounded = Math.round(translateVal * 100) / 100;
+	// 	// 	$(this).siblings(".slider-gran").children(".slider-parent").attr("data-translate", translateVal);
+	// 	// }
+	// 	// else if($(this).hasClass("round-arrow--right") && $(window).width() > 769) {
+	// 	// 	// console.log("right clicked");
+	// 	// 	var attrVal = $(this).siblings(".slider-gran").children(".slider-parent").attr("data-translate");
+	// 	// 	// console.log(attrVal);
+	// 	// 	var newAttrVal = parseFloat(attrVal)+ (-slideWidth);
+	// 	// 	translateVal = newAttrVal;
+	// 	// 	var translateValRounded = Math.round(translateVal * 100) / 100;
+	// 	// 	$(this).siblings(".slider-gran").children(".slider-parent").attr("data-translate", translateVal);
+	// 	// }
+	// 	// console.log(translateVal, maxTranslationRounded);
+
+
+	// 	if(translateValRounded === 0) {
+	// 		if($(this).hasClass("round-arrow--left")) {
+	// 			$(this).css("display", "none")
+	// 		}
+	// 		// $(".round-arrow--left").css("display", "none");
+	// 	}
+	// 	else {
+	// 		$(this).siblings(".round-arrow--left").css("display", "flex");
+	// 	}
+	// 	if(translateValRounded <= -maxTranslationRounded) {
+	// 		if($(this).hasClass("round-arrow--right")) {
+	// 			$(this).css("display", "none")
+	// 		}
+	// 		// $(".round-arrow--right").css("display", "none");
+	// 	}
+	// 	else {
+	// 		$(this).siblings(".round-arrow--right").css("display", "flex");
+	// 	}
+	// 	// console.log($(this).siblings(".slider-gran").children(".slider-parent"));
+	// 	// $(this).siblings().children(".slider-parent");
+	// 	// $(this).siblings(".slider-gran").children(".slider-parent").attr("data-translate", translateVal);
+	// 	// $(this).siblings(".slider-gran").children(".slider-parent").css("transform", "translateX(" + translateVal + "%)");
+	// });
+
+	function hasClass(element, className) {
+		return (' ' + element.className + ' ').indexOf(' ' + className+ ' ') > -1;
+	}
 
 	$(window).on("load resize", function() {
 		$(".slider-parent").attr("data-translate", 0);
