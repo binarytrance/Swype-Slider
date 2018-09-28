@@ -1,5 +1,7 @@
 // "use strict";
 // IIFE to keep things modular and nice
+// need to make things more functional
+// Declare function arguments - any computation inside a function depends only on the arguments, and not on any global object or variable.
 (function() {
 
 	// define constructor which is public
@@ -33,11 +35,13 @@
 		if(arguments[0] && typeof arguments[0] === "object") {
 			this.options = extendDefaults(defaults, arguments[0]);
 		}
+		console.log(this.options);
 	}
 	SwypeSlider.prototype.initSwype = () => {
+		console.log(this.options);
 		// console.log(this.arrows);
 		this.temp = "temp";
-		var temp = "tempVar"
+		var temp = "tempVar";
 		console.log(temp);
 		this.slidesArray = document.getElementsByClassName("swypeSlide");
 		this.swypeSliderWrapper = document.getElementsByClassName("swypeSlider-wrapper");
@@ -59,10 +63,7 @@
 		Array.from(this.swypeSliderWrapper).forEach(function(item) {
 			item.dataset.translate = 0;
 		})
-		// this.swypeSliderWrapper.dataset.icon = "0";
-		
-		
-		
+		// this.swypeSliderWrapper.dataset.icon = "0";	
 		Array.from(this.slidesArray).forEach(function(item) {
 			item.style.width = this.slideWidth + "%";
 		});
@@ -80,13 +81,11 @@
 			console.log(this.arrows, this.arrowsArray);
 			// looping over a HTML collection
 			for(var i = 0; i < this.arrows.length; i++) {
-				console.log("adding event listener");
+				console.log("adding event listener", this.arrows[i]);
 				this.arrows[i].addEventListener("click", changeSlide.bind(this, event));
 			}
 		} 
-		
-		
-	}
+	};
 
 	//private method to change slides on clicking of arrow key
 	changeSlide = () => {
