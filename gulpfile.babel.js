@@ -56,10 +56,10 @@ gulp.task('styles', function() {
 		cascade: false}))
 	.pipe(cleanCSS())
 	.pipe(postcss(plugins))
-	// .pipe(colorguard({
-	// 		threshold: 5,
-	// 		logOk: true
-	// 	}))
+	.pipe(colorguard({
+			threshold: 5,
+			logOk: true
+		}))
 	.pipe(sourcemaps.write())
 	.pipe(rename({ suffix: '.min'}))
 	.pipe(gulp.dest('dist/css'));
@@ -99,6 +99,8 @@ gulp.task('scriptsConcat', function() {
 // use this if you dont want to concatenate all js files into one file
 gulp.task('scripts', function () {
   return gulp.src('src/js/**/*.js')
+    .pipe(plumber({ errorHandler: onError }))
+    .pipe(uglify())
     .pipe(rename({ suffix: '.min' }))
     .pipe(gulp.dest('dist/js/'));
 });
@@ -126,11 +128,11 @@ gulp.task("fonts", () =>
 );
 
 
-gulp.task('watch', ['templates', 'scripts', 'styles', 'images', 'fonts'], function() {
+gulp.task('watch', ['templates', 'scriptsConcat', 'styles', 'images', 'fonts'], function() {
 	gulp.watch('src/css/**/*.scss',                           ['styles']);
 	gulp.watch('src/css/**/*.scss',                           ['sass-lint'])
 	gulp.watch(['src/pug/**/*.pug', 'src/*.pug'],             ['templates']);
-	gulp.watch('src/js/**/*.js',                              ['scripts']);
+	gulp.watch('src/js/**/*.js',                              ['scriptsConcat']);
 	gulp.watch('src/js/**/*.js',                              ['js-lint']);
 	gulp.watch('src/img/**/*',                                ['images']);
 
@@ -138,8 +140,7 @@ gulp.task('watch', ['templates', 'scripts', 'styles', 'images', 'fonts'], functi
 	browserSync.init({
 		server: {
 			proxy: "local.build",
-			baseDir: "dist/",
-			port: 3001
+			baseDir: "dist/"
 		}
 	});
 
